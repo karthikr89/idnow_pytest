@@ -2,12 +2,6 @@ stages:
   - test
   - report
 
-variables:
-  BASE_URL: $BASE_URL
-  PIPEDREAM_API_KEY: $WEBHOOK_API_KEY
-  WEBHOOK_POST_URL: $WEBHOOK_POST_URL
-  WEBHOOK_API_URL: $WEBHOOK_API_URL
-
 pytest:
   stage: test
   image: python:3.11
