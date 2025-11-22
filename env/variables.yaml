@@ -1,0 +1,6 @@
+rest_api:
+  base_url: "https://jsonplaceholder.typicode.com"
+
+webhooks:
+    webhook_post_url: "${WEBHOOK_POST_URL:-}"
+    webhook_api_url: "${WEBHOOK_API_URL:-}"
