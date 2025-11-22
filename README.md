@@ -66,3 +66,15 @@ I kept the framework intentionally simple:
 	•	Allure reports were added to make the execution trace easier to follow
 
 This structure leaves room to grow into something larger without being over-engineered for a case study.
+
+Trade-offs
+	•	JsonPlaceholder always returns 201 for POST requests, even with invalid data. I adjusted the tests to expect the platform’s behavior, not valid REST semantics.
+	•	Webhook polling uses a simple loop. In a real environment I’d switch to a more robust event-based solution or message queue.
+	•	The framework is intentionally lightweight. For a real product, I would add logging, type validation, schema checks, and CI-quality test grouping.
+
+
+One Test Design Decision Based on Risk
+
+I added timestamp validation on the webhook payload because timing-related issues tend to be high-risk in distributed systems.
+If the webhook arrives late or has the wrong timezone, downstream systems can behave unpredictably.
+By validating freshness (≤ 2 minutes) and format, the test ensures the producer and consumer are aligned in terms of event timing.
