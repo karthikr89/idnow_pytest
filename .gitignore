@@ -1,0 +1,53 @@
+# ------------------------------
+# Python cache / build artifacts
+# ------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.egg
+build/
+dist/
+
+# ------------------------------
+# Virtual environments
+# ------------------------------
+.venv/
+venv/
+ENV/
+env/
+.venv*/
+pip-wheel-metadata/
+
+# ------------------------------
+# Allure test results & reports
+# ------------------------------
+allure-results/
+allure-report/
+
+# ------------------------------
+# IDE / Editor settings
+# ------------------------------
+.idea/
+.vscode/
+*.iml
+
+# ------------------------------
+# OS & Miscellaneous
+# ------------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------------
+# Logs
+# ------------------------------
+*.log
+
+# ------------------------------
+# Local environment files
+# ------------------------------
+.env
+*.env
+.env.local
