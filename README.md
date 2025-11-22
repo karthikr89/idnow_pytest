@@ -56,7 +56,7 @@ Generate allure reports:
 View report:
 `allure serve allure-results`
 
-🏗 Design Choices
+Design Choices:
 
 I kept the framework intentionally simple:
 	•	Requests + pytest are enough for this level of testing
