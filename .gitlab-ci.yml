@@ -16,7 +16,7 @@ pytest:
 
 allure_report:
   stage: report
-  image: frankescobar/allure-docker-service
+  image: allureframework/allure-cli
   script:
     - allure generate allure-results --clean -o allure-report
   artifacts:
