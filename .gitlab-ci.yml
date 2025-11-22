@@ -18,7 +18,7 @@ pytest:
 
 allure_report:
   stage: report
-  image: allureframework/allure-cli
+  image: frankescobar/allure-cli
   script:
     - allure generate allure-results --clean -o allure-report
   artifacts:
