@@ -1,0 +1,34 @@
+stages:
+  - test
+  - report
+
+variables:
+  BASE_URL: $BASE_URL
+  PIPEDREAM_API_KEY: $WEBHOOK_API_KEY
+  WEBHOOK_POST_URL: $WEBHOOK_POST_URL
+  WEBHOOK_API_URL: $WEBHOOK_API_URL
+
+pytest:
+  stage: test
+  image: python:3.11
+  script:
+    - pip install -r requirements.txt
+    - pytest --alluredir=allure-results
+  artifacts:
+    when: always
+    paths:
+      - allure-results/
+    expire_in: 7 days
+
+allure_report:
+  stage: report
+  image: frankescobar/allure-docker-service
+  script:
+    - allure generate allure-results --clean -o allure-report
+  artifacts:
+    when: always
+    paths:
+      - allure-report/
+    expire_in: 7 days
+  needs:
+    - pytest
