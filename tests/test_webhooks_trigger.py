@@ -1,4 +1,6 @@
 import os
+import uuid
+
 import pytest
 import allure
 from datetime import datetime, timezone
@@ -16,10 +18,12 @@ def webhook_initiate():
 @allure.severity(allure.severity_level.CRITICAL)
 def test_webhook_timestamp(webhook_initiate):
     current_time = datetime.now(timezone.utc).isoformat()
+    correlation = str(uuid.uuid4())
     payload = {
         "event": "qa.test",
         "payload": {"hello": "world"},
-        "x-request-time": current_time
+        "x-request-time": current_time,
+        "correlation": correlation
     }
 
     with allure.step("Send webhook event to Pipedream endpoint"):
@@ -27,6 +31,7 @@ def test_webhook_timestamp(webhook_initiate):
         assert resp.status_code in (200, 201, 202)
 
     with allure.step("Fetch event and validate timestamp"):
-        result = webhook_initiate.wait_for_event_with_field("x-request-time")
+        result = webhook_initiate.wait_for_event_with_field("x-request-time", correlation)
         body = result["body"]
         assert webhook_initiate.validate_x_request_time_timestamp(body["x-request-time"])
+        assert body["correlation"] == correlation

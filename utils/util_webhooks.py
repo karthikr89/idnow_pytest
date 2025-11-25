@@ -27,7 +27,7 @@ class Webhook:
     @allure.step("Send webhook payload")
     def send_webhook(self, body, headers=None):
         headers = headers or {"Content-Type": "application/json"}
-        return self.session.post(self.webhook_post_url, json=body, headers=headers)
+        return self.session.post(self.webhook_post_url, json=body)
 
     @allure.step("Fetch latest events from Pipedream source")
     def fetch_events(self):
@@ -43,7 +43,7 @@ class Webhook:
         return data
 
     @allure.step("Wait for event containing field: {field_name}")
-    def wait_for_event_with_field(self, field_name):
+    def wait_for_event_with_field(self, field_name, correlation_id):
         deadline = time.time() + self.timeout
 
         while time.time() <= deadline:
@@ -51,6 +51,7 @@ class Webhook:
 
             for e in events:
                 body = e.get("e", {}).get("body")
+
 
                 if not body:
                     body = e.get("json") or e.get("body") or e
@@ -61,12 +62,12 @@ class Webhook:
                     except Exception:
                         continue
 
-                if isinstance(body, dict) and field_name in body:
+                if isinstance(body, dict) and field_name in body and body.get("correlation") == correlation_id:
                     return {"event": e, "body": body}
 
             time.sleep(self.poll_interval)
 
-        raise TimeoutError(f"Event with field '{field_name}' not found.")
+        raise TimeoutError(f"Event with field '{field_name} and {correlation_id}' not found.")
 
     @staticmethod
     @allure.step("Validate x-request-time timestamp")

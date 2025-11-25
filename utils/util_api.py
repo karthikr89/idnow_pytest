@@ -14,9 +14,9 @@ class BaseAPI:
         return f"{self.base_url.rstrip('/')}/{path.lstrip('/')}"
 
     @allure.step("GET request to: {path}")
-    def get_request(self, path, params=None):
+    def get_request(self, path, params=None, header=None):
         url = self._join_url(path)
-        return self.session.get(url, params=params)
+        return self.session.get(url, params=params, headers=header)
 
     @allure.step("POST request to: {path}")
     def post_request(self, path, json=None):
